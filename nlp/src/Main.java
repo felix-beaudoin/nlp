@@ -1,19 +1,28 @@
 import edu.stanford.nlp.ling.*;
 import edu.stanford.nlp.pipeline.*;
+
+import java.util.HashMap;
 import java.util.Properties;
 
 public class Main {
     public static void main(String[] args) {
-        // Press Alt+Enter with your caret at the highlighted text to see how
-        // IntelliJ IDEA suggests fixing it.
-        System.out.printf("Projet NLP github!");
 
-        // Press Shift+F10 or click the green arrow button in the gutter to run the code.
-        for (int i = 1; i <= 5; i++) {
+        HashMap<Integer, String> map = new HashMap<>();
 
-            // Press Shift+F9 to start debugging your code. We have set one breakpoint
-            // for you, but you can always add more by pressing Ctrl+F8.
-            System.out.println("i = " + i);
-        }
+        map.put(5, "salut");
+        map.put(2, "deux");
+        map.put(3, "three");
+        System.out.println(map.get(5));
+        map.put(5, "five");
+        System.out.println(map.get(5));
+
+    /*
+    * 1. Formatter le fichier + HashMap<Word, HashMap<File, Int[]>>
+    * 2. Autocorrection d'erreur du query
+    * 3. Recherche fichier pertinent
+    * 4. Bigrammes et autocompletion
+    *
+    * */
+
     }
 }
