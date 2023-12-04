@@ -1,12 +1,14 @@
 import edu.stanford.nlp.ling.*;
 import edu.stanford.nlp.pipeline.*;
 
-import java.net.CookieHandler;
+import java.io.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Properties;
-import java.util.Queue;
-
-import static edu.stanford.nlp.util.StringUtils.editDistance;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 public class Main {
     public static void main(String[] args) {
@@ -29,13 +31,14 @@ public class Main {
 
 
 
+
+    /*
+    * 1. Formatter le fichier + HashMap<Word, HashMap<File, Int[]>>
+    * 2. Autocorrection d'erreur du query
+    * 3. Recherche fichier pertinent
+    * 4. Bigrammes et autocompletion
+    *
+    * */
+
     }
 }
-
-/*
- * 1. Formatter le fichier + HashMap<Word, HashMap<File, Int[]>>
- * 2. Autocorrection d'erreur du query
- * 3. Recherche fichier pertinent
- * 4. Bigrammes et autocompletion
- *
- * */
