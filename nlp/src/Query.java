@@ -5,12 +5,15 @@ public class Query {
         // queryType = true => the most probable bigram of _
         // queryType = false => search _
 
-    public Query(boolean queryType, String bigramWord) throws IllegalArgumentException {
+    //                                                          utilise try catch, pas throw
+        public Query(boolean queryType, String bigramWord) throws IllegalArgumentException {
+        // tu peux enlever le "== true"
         if (queryType == true) {
             this.bigramWord = bigramWord;
             this.queryType = true;
         }
         else {
+            // ton code ne devrait pas par défaut throw des exceptions
             throw new IllegalArgumentException("The query 'The most probable bigram of' requires a String");
         }
     }
