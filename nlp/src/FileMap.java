@@ -4,10 +4,12 @@ import java.util.*;
 public class FileMap implements Map {
 
     private int size = 0;
-    private int maxSize = 15;
+    public int maxSize;
+    public double maxFacteurCharge = 3.0/4;
     private LinkedList<FileMapEntry>[] map;
 
     FileMap() {
+        maxSize = 15;
         map = new LinkedList[maxSize];
 
         for (int i = 0; i < maxSize; i++) {
@@ -15,18 +17,8 @@ public class FileMap implements Map {
         }
     }
 
-    FileMap(int maxSize, FileMap fileMap) {
-        map = new LinkedList[maxSize];
 
-        for (int i = 0; i < maxSize; i++) {
-            map[i] = new LinkedList<>();
-        }
 
-        this.maxSize = maxSize;
-
-        //fileMap.getMapEntry();
-        //TODO à finir
-    }
 
 
     public int size() {
@@ -56,7 +48,9 @@ public class FileMap implements Map {
     }
 
     public ArrayList<Integer> get(String fichier) {
+
         int index = fichier.hashCode() % maxSize;
+        if (index<0) { index += maxSize; }
 
         for (FileMapEntry entry : map[index]) {
             if (fichier.equals(entry.fichier())) { return entry.positions(); }
@@ -67,11 +61,26 @@ public class FileMap implements Map {
 
 
     public ArrayList<Integer> put(String fichier, int position) {
-        // Mis à part quelques détails le plan était presque sans faille
-
-        int index = fichier.hashCode() % maxSize;
 
         size++;
+
+        if (size >= maxSize * maxFacteurCharge) {
+
+            Set<FileMapEntry> entrySet = entrySet();
+
+            this.maxSize = maxSize*2 + 1;
+            map = new LinkedList[maxSize];
+
+            for (int i = 0; i < maxSize; i++) {
+                map[i] = new LinkedList<>();
+            }
+
+            for (FileMapEntry entry : entrySet) {
+                put(entry.fichier(), entry.positions());
+            }
+        }
+
+        int index = fichier.hashCode() % maxSize;
 
         for (int i = 0; i < map[index].size(); i++) {
 
@@ -89,7 +98,21 @@ public class FileMap implements Map {
 
         map[index].push(newEntry);
         return null;
+    }
 
+    private ArrayList<Integer> put(String fichier, ArrayList<Integer> positions) {
+
+        int index = fichier.hashCode() % maxSize;
+        if (index<0) { index += maxSize; }
+
+        for (FileMapEntry entry : map[index]) {
+            if (entry.fichier().equals(fichier)) {
+                map[index].push(new FileMapEntry(fichier, positions));
+                return map[index].remove(map[index].indexOf(entry)).positions();
+            }
+        }
+        map[index].push(new FileMapEntry(fichier, positions));
+        return null;
     }
 
     public Object remove(Object key) {
@@ -106,21 +129,36 @@ public class FileMap implements Map {
 
     @Override
     public Set keySet() {
-        return null;
+        HashSet<String> set = new HashSet<>();
+
+        for (LinkedList<FileMapEntry> entryList : map) {
+            for (FileMapEntry entry : entryList) {
+                set.add(entry.fichier());
+            }
+        }
+
+        return set;
     }
 
     public Collection values() {
-        return null;
+        HashSet<ArrayList<Integer>> set = new HashSet<>();
+
+        for (LinkedList<FileMapEntry> entryList : map) {
+            for (FileMapEntry entry : entryList) {
+                set.add(entry.positions());
+            }
+        }
+
+        return set;
     }
 
     public Set<FileMapEntry> entrySet() {
-        HashSet<Object> set = new HashSet<>();
-        for (int i = 0; i < maxSize; i++) {
-            for (int j = 0; j < map[i].size(); i++) {
-                map[i].get(j);
+        HashSet<FileMapEntry> set = new HashSet<>();
 
-            }
+        for (LinkedList<FileMapEntry> entryList : map) {
+            set.addAll(entryList);
         }
-        return null;
+
+        return set;
     }
 }

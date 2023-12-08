@@ -4,33 +4,23 @@ import java.util.*;
 public class WordMap implements Map {
 
     private int size = 0;
-    private int maxSize = 15;
+    private int maxSize;
+
+    public double maxFacteurCharge = 3.0/4;
+
     private LinkedList<WordMapEntry>[] map;
 
     WordMap() {
+        maxSize = 15;
         map = new LinkedList[maxSize];
 
         for (int i = 0; i < maxSize; i++) {
             map[i] = new LinkedList<>();
         }
     }
-
-    WordMap(int maxSize, WordMap mapImplementation) {
-        map = new LinkedList[maxSize];
-
-        for (int i = 0; i < maxSize; i++) {
-            map[i] = new LinkedList<>();
-        }
-
-        this.maxSize = maxSize;
-
-        //mapImplementation.get();
-    }
-
-
 
     public int size() {
-        return 0;
+        return size;
     }
 
     public boolean isEmpty() {
@@ -51,8 +41,8 @@ public class WordMap implements Map {
 
 
     public FileMap get(Object mot) {
-        int index = mot.hashCode() % maxSize;
 
+        int index = mot.hashCode() % maxSize;
         if (index<0) { index += maxSize; }
 
         for (WordMapEntry entry : map[index]) {
@@ -64,12 +54,29 @@ public class WordMap implements Map {
 
     public Object put(String mot, FileMap fileMap) {
 
+        size++;
+
+        if (size >= maxSize * maxFacteurCharge) {
+
+
+            Set<WordMapEntry> entrySet = entrySet();
+
+            this.maxSize = maxSize*2 + 1;
+            map = new LinkedList[maxSize];
+
+            for (int i = 0; i < maxSize; i++) {
+                map[i] = new LinkedList<>();
+            }
+
+            for (WordMapEntry entry : entrySet) {
+                put(entry.mot(), entry.fileMap());
+                System.out.println("resizing!");
+            }
+        }
+
         WordMapEntry newEntry = new WordMapEntry(mot, fileMap);
 
         int index = mot.hashCode() % maxSize;
-
-        size++;
-
         if (index<0) { index += maxSize; }
 
         for (int i = 0; i < map[index].size(); i++) {
@@ -104,21 +111,35 @@ public class WordMap implements Map {
 
     @Override
     public Set keySet() {
-        return null;
+        HashSet<String> set = new HashSet<>();
+
+        for (LinkedList<WordMapEntry> entryList : map) {
+            for (WordMapEntry entry : entryList) {
+                set.add(entry.mot());
+            }
+        }
+
+        return set;
     }
 
     public Collection values() {
-        return null;
-    }
+        HashSet<FileMap> set = new HashSet<>();
 
-    public Set<FileMapEntry> entrySet() {
-        HashSet<Object> set = new HashSet<>();
-        for (int i = 0; i < maxSize; i++) {
-            for (int j = 0; j < map[i].size(); i++) {
-                map[i].get(j);
-
+        for (LinkedList<WordMapEntry> entryList : map) {
+            for (WordMapEntry entry : entryList) {
+                set.add(entry.fileMap());
             }
         }
-        return null;
+
+        return set;
+    }
+
+    public Set<WordMapEntry> entrySet() {
+        HashSet<WordMapEntry> set = new HashSet<>();
+
+        for (LinkedList<WordMapEntry> entryList : map) {
+            set.addAll(entryList);
+        }
+        return set;
     }
 }

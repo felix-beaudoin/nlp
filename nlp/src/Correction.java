@@ -1,4 +1,4 @@
-import static edu.stanford.nlp.util.StringUtils.editDistance;
+//import static edu.stanford.nlp.util.StringUtils.editDistance;
 import java.util.HashMap;
 public class Correction {
     private Query query;
@@ -11,12 +11,12 @@ public class Correction {
         String closestWord = wordToCorrect;
 
         for (String word : text1.keySet()) {
-            int editDistance = editDistance(wordToCorrect, word);
+            //int editDistance = editDistance(wordToCorrect, word);
 
-            if (leastEditDistance > editDistance) {     // a word in text is closer to the word we are correcting
-                leastEditDistance = editDistance;
-                closestWord = word;
-            }
+            //if (leastEditDistance > editDistance) {     // a word in text is closer to the word we are correcting
+             //   leastEditDistance = editDistance;
+            //    closestWord = word;
+           // }
         }
         return closestWord;
     }
