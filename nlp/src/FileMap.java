@@ -30,10 +30,20 @@ public class FileMap implements Map {
     }
 
     public boolean containsKey(Object key) {
+        for (LinkedList<FileMapEntry> entries : map) {
+            for (FileMapEntry entry : entries) {
+                if ( key.equals(entry.fichier()) ) { return true; }
+            }
+        }
         return false;
     }
 
     public boolean containsValue(Object value) {
+        for (LinkedList<FileMapEntry> entries : map) {
+            for (FileMapEntry entry : entries) {
+                if ( value.equals(entry.positions()) ) { return true; }
+            }
+        }
         return false;
     }
 

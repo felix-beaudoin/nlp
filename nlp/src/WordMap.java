@@ -27,11 +27,21 @@ public class WordMap implements Map {
         return size == 0;
     }
 
-    public boolean containsKey(Object key) {
+    public boolean containsKey(Object word) {
+        for (LinkedList<WordMapEntry> entries : map) {
+            for (WordMapEntry entry : entries) {
+                if ( word.equals(entry.mot()) ) { return true; }
+            }
+        }
         return false;
     }
 
     public boolean containsValue(Object value) {
+        for (LinkedList<WordMapEntry> entries : map) {
+            for (WordMapEntry entry : entries) {
+                if ( value.equals(entry.fileMap()) ) { return true; }
+            }
+        }
         return false;
     }
 
