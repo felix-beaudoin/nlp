@@ -19,26 +19,31 @@ public class Main {
         System.out.println(m.wordMap.get("the").get("903.txt")); // 0, 39, 77
 
 
-/*
-        // For testing correction function on hashmap keys
-        String sentence1 = new String("The discovery of other solar system wanderers rivaling Pluto in " +
-                "size suddenly had scientists asking what wasn’t a planet");
-        String[] sentence = sentence1.split(" ");
+        Bigrams textBigrams = new Bigrams(m.words);
+        System.out.println(textBigrams.getBigrams()[m.words.length-2].w2);
 
-        HashMap<String, Integer> map = new HashMap<>();
-        for (String word : sentence) {
-                map.put(word, 0);
+        QueryReader queryReader = new QueryReader("src/ressources/query1.txt", m.wordMap);
+        try {
+            queryReader.readFile();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         }
-
-        Correction correction = new Correction();
-        System.out.println(correction.closestWord("plonat", map));
-
-
+        queryReader.correctQueries();
+        System.out.println(queryReader.getSearchQueries().get(1)[1]);
+        System.out.println(queryReader.getBigramQueries().get(0));
 
 
 
 
 
+
+
+
+
+
+
+
+/*
     * 1. Formatter le fichier + HashMap<Word, HashMap<File, Int[]>>
     * 2. Autocorrection d'erreur du query
     * 3. Recherche fichier pertinent

@@ -8,7 +8,7 @@ public class Query {
     //                                                          utilise try catch, pas throw
         public Query(boolean queryType, String bigramWord) throws IllegalArgumentException {
         // tu peux enlever le "== true"
-        if (queryType == true) {
+        if (queryType) {
             this.bigramWord = bigramWord;
             this.queryType = true;
         }
@@ -18,7 +18,7 @@ public class Query {
         }
     }
     public Query(boolean queryType, String[] searchWords) throws IllegalArgumentException {
-        if (queryType == false) {
+        if (!queryType) {
             this.searchWords = searchWords;
             this.queryType = false;
         }

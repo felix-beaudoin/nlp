@@ -5,6 +5,9 @@ import java.util.Properties;
 public class MapBuilder {
 
     WordMap wordMap = new WordMap();
+    String[] words;     // the list of words of all the files
+
+
     MapBuilder() {
         try {
         String dir = "src/ressources/dataset";
@@ -42,13 +45,16 @@ public class MapBuilder {
 
 
                 String[] mots = str.split(" ");
+                this.words = mots;
+
+                System.out.println(mots[0] + mots[1] + mots[2]);
 
                 for (int i=0; i < mots.length; i++) {
                     String mot = mots[i];
                     if (wordMap.get(mot) == null) {
 
                         FileMap fileMap = new FileMap();
-                        fileMap.put(word, i);
+                        fileMap.put(word, i);           // Pourquoi l'entree dans fileMap est (word, i) et pas (fichier, i)
                         wordMap.put(mot, fileMap);
                     }
 
@@ -59,7 +65,7 @@ public class MapBuilder {
             }
         }
         } catch (IOException joe) {
-            System.out.println(joe);
+            System.out.println(joe);        // let's go joe
         }
     }
 }

@@ -8,6 +8,10 @@ public class FileMap implements Map {
     public double maxFacteurCharge = 3.0/4;
     private LinkedList<FileMapEntry>[] map;
 
+    // [LinkedList: {(fichier, positions) -> (fichier, positions) -> ...};
+    // LinkedList: {(fichier, positions) -> (fichier, positions) -> ...};
+    // ...; ]
+
     FileMap() {
         maxSize = 15;
         map = new LinkedList[maxSize];
@@ -92,7 +96,7 @@ public class FileMap implements Map {
 
         }
 
-        var positionArray = new ArrayList<Integer>();
+        var positionArray = new ArrayList<Integer>();       // Pourquoi var et pas ArrayList<Integer>
         positionArray.add(position);
         FileMapEntry newEntry = new FileMapEntry(fichier, positionArray);
 
@@ -108,6 +112,7 @@ public class FileMap implements Map {
         for (FileMapEntry entry : map[index]) {
             if (entry.fichier().equals(fichier)) {
                 map[index].push(new FileMapEntry(fichier, positions));
+
                 return map[index].remove(map[index].indexOf(entry)).positions();
             }
         }
