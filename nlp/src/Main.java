@@ -19,8 +19,9 @@ public class Main {
         System.out.println(m.wordMap.get("the").get("903.txt")); // 0, 39, 77
 
 
-        Bigrams textBigrams = new Bigrams(m.words);
-        System.out.println(textBigrams.getBigrams()[m.words.length-2].w2);
+        Bigrams textBigrams = new Bigrams(m.words, m.wordMap, m.arrayOfFiles);
+        System.out.println(textBigrams.getBigrams()[2][m.words[2].length-2].w2);
+        textBigrams.getMostProbableBigramOf("planet");
 
         QueryReader queryReader = new QueryReader("src/ressources/query1.txt", m.wordMap);
         try {

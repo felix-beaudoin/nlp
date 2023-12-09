@@ -1,20 +1,40 @@
 import java.io.*;
 import edu.stanford.nlp.ling.*;
 import edu.stanford.nlp.pipeline.*;
-import java.util.Properties;
+
+import java.util.*;
+
 public class MapBuilder {
 
     WordMap wordMap = new WordMap();
-    String[] words;     // the list of words of all the files
-
+    String[][] words;     // the list of words of all the files
+    List<File> arrayOfFiles;
 
     MapBuilder() {
         try {
         String dir = "src/ressources/dataset";
         File folder = new File(dir);
-        File[] listOfFiles = folder.listFiles();
-        for (File file : listOfFiles) {
+        File[] list = folder.listFiles();
 
+        int dimension = list.length;
+
+        // sort listOfFiles
+
+        List<File> arrayOfFiles = Arrays.asList(list);
+        this.arrayOfFiles.sort(Comparator.naturalOrder());
+        File[] listOfFiles = new File[dimension];
+        listOfFiles = arrayOfFiles.toArray(list);
+
+        //test
+            for (File file:listOfFiles) {
+                System.out.println(file.getName());
+            }
+
+
+        words = new String[dimension][];
+
+        for (int j=0; j<listOfFiles.length; j++) {
+            File file = listOfFiles[j];
             if(file.isFile())
             {
                 BufferedReader br=new BufferedReader(new FileReader(new
@@ -45,7 +65,7 @@ public class MapBuilder {
 
 
                 String[] mots = str.split(" ");
-                this.words = mots;
+                this.words[j] = mots;
 
                 System.out.println(mots[0] + mots[1] + mots[2]);
 

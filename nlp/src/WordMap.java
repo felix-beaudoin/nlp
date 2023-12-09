@@ -40,7 +40,7 @@ public class WordMap implements Map {
 
 
 
-    public FileMap get(Object mot) {
+    public FileMap get(Object mot) {            // Object pourrait etre String?
 
         int index = mot.hashCode() % maxSize;
         if (index<0) { index += maxSize; }
