@@ -7,12 +7,15 @@ import java.util.*;
 public class MapBuilder {
 
     WordMap wordMap = new WordMap();
-    String[][] words;     // the list of words of all the files
-    List<File> arrayOfFiles;
+    String[][] words;     // a enlever
+    List<File> arrayOfFiles;        // a enlever
+
+    //ArrayList<Text> texts = new ArrayList<>();
+    Text[] texts;
 
     MapBuilder() {
         try {
-        String dir = "src/ressources/dataset";
+        String dir = "src/ressources/dataset";          // devrait peut-être être un attribut de MapBuilder pour qu'on rentre le path dans Main?
         File folder = new File(dir);
         File[] list = folder.listFiles();
 
@@ -21,7 +24,7 @@ public class MapBuilder {
         // sort listOfFiles
 
         List<File> arrayOfFiles = Arrays.asList(list);
-        this.arrayOfFiles.sort(Comparator.naturalOrder());
+        arrayOfFiles.sort(Comparator.naturalOrder());
         File[] listOfFiles = new File[dimension];
         listOfFiles = arrayOfFiles.toArray(list);
 
@@ -32,6 +35,8 @@ public class MapBuilder {
 
 
         words = new String[dimension][];
+
+        texts = new Text[dimension];
 
         for (int j=0; j<listOfFiles.length; j++) {
             File file = listOfFiles[j];
@@ -66,6 +71,10 @@ public class MapBuilder {
 
                 String[] mots = str.split(" ");
                 this.words[j] = mots;
+
+                this.texts[j] = new Text(file.getName(), mots);
+
+
 
                 System.out.println(mots[0] + mots[1] + mots[2]);
 

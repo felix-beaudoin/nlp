@@ -13,25 +13,39 @@ import java.util.zip.ZipFile;
 
 public class Main {
     public static void main(String[] args) {
+        String datasetDir = "src/ressources/dataset";
+        String queryFile = "src/ressources/query1.txt";
+
+        File folder = new File(datasetDir);
+        int numberOfFiles = folder.listFiles().length;
+
 
         var m = new MapBuilder();
         System.out.println("test");
         System.out.println(m.wordMap.get("the").get("903.txt")); // 0, 39, 77
 
 
-        Bigrams textBigrams = new Bigrams(m.words, m.wordMap, m.arrayOfFiles);
+        Bigrams textBigrams = new Bigrams(m.words, m.wordMap, m.arrayOfFiles, m.texts);
         System.out.println(textBigrams.getBigrams()[2][m.words[2].length-2].w2);
-        textBigrams.getMostProbableBigramOf("planet");
+        System.out.println(textBigrams.getMostProbableBigramOf("say"));
 
-        QueryReader queryReader = new QueryReader("src/ressources/query1.txt", m.wordMap);
+
+        System.out.println("-------------- TFIDF ----------------");
+
+        String[] bla = {"coffee", "import"};
+        DocumentSearch documentSearch = new DocumentSearch(bla, m.wordMap, numberOfFiles, m.texts);
+        System.out.println(documentSearch.countFrequency("coffee", "903.txt"));
+        System.out.println(documentSearch.countDocuments("the"));
+        System.out.println(documentSearch.score(bla, "903.txt"));
+        System.out.println(documentSearch.bestDocument(bla));
+
+        System.out.println("--------- Answers to queries ------------");
+        QueryReader queryReader = new QueryReader("src/ressources/query1.txt", m.wordMap, textBigrams, documentSearch);
         try {
             queryReader.readFile();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        queryReader.correctQueries();
-        System.out.println(queryReader.getSearchQueries().get(1)[1]);
-        System.out.println(queryReader.getBigramQueries().get(0));
 
 
 
@@ -44,11 +58,18 @@ public class Main {
 
 
 
-/*
+
+
+
+
+        /*
     * 1. Formatter le fichier + HashMap<Word, HashMap<File, Int[]>>
     * 2. Autocorrection d'erreur du query
     * 3. Recherche fichier pertinent
     * 4. Bigrammes et autocompletion
+    *
+    *
+    *
     *
     * */
 

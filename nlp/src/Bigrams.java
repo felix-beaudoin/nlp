@@ -1,17 +1,22 @@
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Bigrams {
 
     private String[][] words;
     private WordMap wordMap;
     private List<File> arrayOfFiles;
+    //private ArrayList<Text> texts;
+    private Text[] texts;
 
-    public Bigrams(String[][] words, WordMap wordMap, List<File> arrayOfFiles) {
+    public Bigrams(String[][] words, WordMap wordMap, List<File> arrayOfFiles, Text[] texts) {
         this.words = words;
         this.wordMap = wordMap;
         this.arrayOfFiles = arrayOfFiles;
+        this.texts = texts;
     }
 
 
@@ -31,7 +36,7 @@ public class Bigrams {
     }
 
 
-    public String getMostProbableBigramOf(String wordToComplete) {
+    public String getMostProbableBigramOf1(String wordToComplete) {
         FileMap fileMap =  wordMap.get(wordToComplete);
         System.out.println("fileMap.keySet() = " + fileMap.keySet());
         System.out.println("fileMap.entrySet() = " + fileMap.entrySet());
@@ -53,4 +58,47 @@ public class Bigrams {
         return "";
     }
 
+    public String getMostProbableBigramOf(String wordToComplete) {
+        FileMap fileMap =  wordMap.get(wordToComplete);     // on trouve le fileMap associé au mot
+
+        HashMap<String, Integer> nextwords = new HashMap<>();
+
+        for (FileMapEntry entry : fileMap.entrySet()) {
+            String title = entry.fichier();
+            for (Text text : texts) {
+                if (text.getTitle().equals(title)) {
+                    for (Integer position : entry.positions()) {
+                        if (!position.equals(text.getWords().length-1)) {           // pour etre sur de pas avoir index out of bound
+                            String word = text.getWords()[position + 1];            // on trouve le mot suivant
+
+                            if (nextwords.containsKey(word)) {
+                                Integer count = nextwords.get(word);
+                                nextwords.put(word, count+1);                   // on monte le compteur de +1
+                            } else {
+                                nextwords.put(word, 1);
+                            }
+                        }
+
+                    }
+
+                    break;
+                }
+            }
+        }
+        Integer max = 0;
+        String wordMax = "joe";
+
+        for (Map.Entry<String, Integer> entry : nextwords.entrySet()) {
+            if (entry.getValue().compareTo(max) > 0) {
+                max = entry.getValue();
+                wordMax = entry.getKey();
+            } else if  (entry.getValue().compareTo(max) == 0) {         //prendre le premier dans l'ordre lexicographique
+                if (entry.getKey().compareTo(wordMax) < 0 ) {
+                    wordMax = entry.getKey();
+                }
+
+            }
+        }
+        return wordMax;
+    }
 }

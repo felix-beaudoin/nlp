@@ -33,7 +33,19 @@ public class FileMap implements Map {
         return size == 0;
     }
 
+    @Override
     public boolean containsKey(Object key) {
+        return false;
+    }
+
+    public boolean containsKey(String fichier) {
+        int index = fichier.hashCode() % maxSize;
+        if (index<0) { index += maxSize; }
+
+        for (FileMapEntry entry : map[index]) {
+            if (fichier.equals(entry.fichier())) { return true; }
+        }
+
         return false;
     }
 
