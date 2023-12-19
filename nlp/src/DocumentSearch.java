@@ -9,9 +9,7 @@ public class DocumentSearch {
      */
 
 
-    private String[] wordsToSearch;
     private WordMap wordMap;
-
     private int numberOfFiles;
     private Text[] texts;
     private ArrayList<String> titles = new ArrayList<>();
@@ -22,21 +20,32 @@ public class DocumentSearch {
         }
     }
 
-    public DocumentSearch(String[] wordsToSearch, WordMap wordMap, int numberOfFiles, Text[] texts) {
-        this.wordsToSearch = wordsToSearch;
+    /**
+     * Constructor for DocumentSearch
+     * @param wordMap
+     * @param numberOfFiles number of files in dataset
+     * @param texts list of dataset texts
+     * Produces a list of the titles.
+     */
+    public DocumentSearch(WordMap wordMap, int numberOfFiles, Text[] texts) {
         this.wordMap = wordMap;
         this.numberOfFiles = numberOfFiles;
         this.texts = texts;
         listTitles();
     }
 
-    // Count the word frequency in 1 document
+    /**
+     * Count a word occurrences in one document
+     * @param wordToSearch
+     * @param document
+     * @return number of times wordToSearch appears in the document
+     */
     public int countFrequency(String wordToSearch, String document) {
         int count = 0;
         FileMap fileMap = this.wordMap.get(wordToSearch);
-        //System.out.println(fileMap.entrySet());
+
             if (fileMap.containsKey(document)) {
-                count = fileMap.get(document).size();
+                count = fileMap.get(document).size();           // Size of the list of positions in document
             }
 
         return count;
@@ -48,14 +57,19 @@ public class DocumentSearch {
         return number;
     }
 
+    /**
+     * Calculate TF-IDF score of one document
+     * @param wordsToSearch list of words to search
+     * @param document
+     * @return Score based on frequency of the words to search in this document
+     */
     public double score (String[] wordsToSearch, String document) {
         double score = 0;
         for (String word : wordsToSearch) {
-            Set<String> documents = wordMap.get(word).keySet();
+            Set<String> documents = wordMap.get(word).keySet();         // Documents that contain this word
 
             // IDF
             double idf = 1 + Math.log((1 + numberOfFiles) / (1 + documents.size()));
-            //System.out.println("idf = "+idf);
 
             // TF
             double count = countFrequency(word, document);
@@ -68,29 +82,32 @@ public class DocumentSearch {
                 }
             }
             double tf = count / totalW;
-           // System.out.println("tf= "+tf);
 
             // TF-IDF
             double tfIdf = tf * idf;
-           // System.out.println("tfidf= "+tfIdf);
+
             score += tfIdf;
         }
         return score;
 
     }
 
-    // Compare the scores between documents
+    /**
+     * Compare scores between documents
+     * @param wordsToSearch
+     * @return the most relevant document related to the wordsToSearch
+     */
     public String bestDocument(String[] wordsToSearch) {
         double bestScore = 0;
         String bestDocument = "joe";
         for (String document : titles) {
             double score = score(wordsToSearch, document);
-            if (score > bestScore) {
+            if (score > bestScore) {                        // document has a better score
                 bestScore = score;
                 bestDocument = document;
 
             } else if (score == bestScore) {
-                if (document.compareTo(bestDocument) < 0) {         // Lexical order
+                if (document.compareTo(bestDocument) < 0) {      // Take first document in lexical order
                     bestDocument = document;
                 }
             }

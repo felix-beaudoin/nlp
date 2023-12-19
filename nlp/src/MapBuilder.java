@@ -1,45 +1,35 @@
 import java.io.*;
 import edu.stanford.nlp.ling.*;
 import edu.stanford.nlp.pipeline.*;
+import edu.stanford.nlp.util.logging.RedwoodConfiguration;
 
 import java.util.*;
 
 public class MapBuilder {
 
+        // Mettre les attributs private + get???
     WordMap wordMap = new WordMap();
-    String[][] words;     // a enlever
-    List<File> arrayOfFiles;        // a enlever
+    private String datasetDir;
 
-    //ArrayList<Text> texts = new ArrayList<>();
     Text[] texts;
 
-    MapBuilder() {
+    public MapBuilder(String datasetDir) {
+        this.datasetDir = datasetDir;
+
         try {
-        String dir = "src/ressources/dataset";          // devrait peut-être être un attribut de MapBuilder pour qu'on rentre le path dans Main?
+        String dir = datasetDir;
         File folder = new File(dir);
         File[] list = folder.listFiles();
 
         int dimension = list.length;
 
-        // sort listOfFiles
-
-        List<File> arrayOfFiles = Arrays.asList(list);
-        arrayOfFiles.sort(Comparator.naturalOrder());
-        File[] listOfFiles = new File[dimension];
-        listOfFiles = arrayOfFiles.toArray(list);
-
-        //test
-            for (File file:listOfFiles) {
-                System.out.println(file.getName());
-            }
-
-
-        words = new String[dimension][];
-
         texts = new Text[dimension];
 
-        for (int j=0; j<listOfFiles.length; j++) {
-            File file = listOfFiles[j];
+        for (int j=0; j<list.length; j++) {
+           File file = list[j];
+
+
+
             if(file.isFile())
             {
                 BufferedReader br=new BufferedReader(new FileReader(new
@@ -53,6 +43,8 @@ public class MapBuilder {
                     Properties props=new Properties();
                     props.setProperty("annotators","tokenize,pos,lemma");
                     props.setProperty("coref.algorithm","neural");
+
+                    RedwoodConfiguration.current().clear().apply();
                     StanfordCoreNLP pipeline=new StanfordCoreNLP(props);
                     CoreDocument document=new CoreDocument(finalline);
                     pipeline.annotate(document);
@@ -70,20 +62,20 @@ public class MapBuilder {
 
 
                 String[] mots = str.split(" ");
-                this.words[j] = mots;
+
 
                 this.texts[j] = new Text(file.getName(), mots);
 
 
 
-                System.out.println(mots[0] + mots[1] + mots[2]);
+                System.out.println(file.getName() + " " +mots[0] + mots[1] + mots[2]);
 
                 for (int i=0; i < mots.length; i++) {
                     String mot = mots[i];
                     if (wordMap.get(mot) == null) {
 
                         FileMap fileMap = new FileMap();
-                        fileMap.put(word, i);           // Pourquoi l'entree dans fileMap est (word, i) et pas (fichier, i)
+                        fileMap.put(word, i);
                         wordMap.put(mot, fileMap);
                     }
 

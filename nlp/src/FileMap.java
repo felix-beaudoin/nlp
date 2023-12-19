@@ -1,6 +1,7 @@
 
 import java.util.*;
 
+
 public class FileMap implements Map {
 
     private int size = 0;
@@ -97,6 +98,8 @@ public class FileMap implements Map {
         }
 
         int index = fichier.hashCode() % maxSize;
+        if (index<0) { index += maxSize; }
+
 
         for (int i = 0; i < map[index].size(); i++) {
 

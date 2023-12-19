@@ -13,36 +13,36 @@ import java.util.zip.ZipFile;
 
 public class Main {
     public static void main(String[] args) {
-        String datasetDir = "src/ressources/dataset";
-        String queryFile = "src/ressources/query1.txt";
+        String datasetDir = "src/ressources/Informations_sur_le_TP2/dataset";
+        String queryFile = "src/ressources/Informations_sur_le_TP2/query.txt";
 
         File folder = new File(datasetDir);
         int numberOfFiles = folder.listFiles().length;
 
 
-        var m = new MapBuilder();
-        System.out.println("test");
-        System.out.println(m.wordMap.get("the").get("903.txt")); // 0, 39, 77
-
-
-        Bigrams textBigrams = new Bigrams(m.words, m.wordMap, m.arrayOfFiles, m.texts);
-        System.out.println(textBigrams.getBigrams()[2][m.words[2].length-2].w2);
-        System.out.println(textBigrams.getMostProbableBigramOf("say"));
-
-
-        System.out.println("-------------- TFIDF ----------------");
-
-        String[] bla = {"coffee", "import"};
-        DocumentSearch documentSearch = new DocumentSearch(bla, m.wordMap, numberOfFiles, m.texts);
-        System.out.println(documentSearch.countFrequency("coffee", "903.txt"));
-        System.out.println(documentSearch.countDocuments("the"));
-        System.out.println(documentSearch.score(bla, "903.txt"));
-        System.out.println(documentSearch.bestDocument(bla));
+        var m = new MapBuilder(datasetDir);
+       // System.out.println("test");
+       // System.out.println(m.wordMap.get("the").get("903.txt")); // 0, 39, 77
+//
+//
+        Bigrams textBigrams = new Bigrams(m.wordMap,  m.texts);
+       // System.out.println(textBigrams.getBigrams()[2][m.words[2].length-2].w2);
+       // System.out.println(textBigrams.getMostProbableBigramOf("say"));
+//
+//
+       // System.out.println("-------------- TFIDF ----------------");
+//
+       // String[] bla = {"coffee", "import"};
+        DocumentSearch documentSearch = new DocumentSearch(m.wordMap, numberOfFiles, m.texts);
+       // System.out.println(documentSearch.countFrequency("coffee", "903.txt"));
+       // System.out.println(documentSearch.countDocuments("the"));
+       // System.out.println(documentSearch.score(bla, "903.txt"));
+       // System.out.println(documentSearch.bestDocument(bla));
 
         System.out.println("--------- Answers to queries ------------");
-        QueryReader queryReader = new QueryReader("src/ressources/query1.txt", m.wordMap, textBigrams, documentSearch);
+        QueryReader queryReader = new QueryReader(queryFile, m.wordMap, textBigrams, documentSearch);
         try {
-            queryReader.readFile();
+            queryReader.answerQueries();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

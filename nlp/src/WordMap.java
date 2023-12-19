@@ -72,7 +72,7 @@ public class WordMap implements Map {
 
             for (WordMapEntry entry : entrySet) {
                 put(entry.mot(), entry.fileMap());
-                System.out.println("resizing!");
+               // System.out.println("resizing!");
             }
         }
 
