@@ -11,7 +11,7 @@ public class WordMap implements Map {
     private LinkedList<WordMapEntry>[] map;
 
     WordMap() {
-        maxSize = 15;                   // est ce que maxSize devrait etre premier pour eviter les collisions
+        maxSize = 17;
         map = new LinkedList[maxSize];
 
         for (int i = 0; i < maxSize; i++) {
@@ -40,7 +40,7 @@ public class WordMap implements Map {
 
 
 
-    public FileMap get(Object mot) {            // Object pourrait etre String?
+    public FileMap get(Object mot) {
 
         int index = mot.hashCode() % maxSize;
         if (index<0) { index += maxSize; }
@@ -68,11 +68,8 @@ public class WordMap implements Map {
                 map[i] = new LinkedList<>();
             }
 
-            // est ce qu'on devrait delete l'ancienne map pour pas surcharger la memoire
-
             for (WordMapEntry entry : entrySet) {
                 put(entry.mot(), entry.fileMap());
-               // System.out.println("resizing!");
             }
         }
 

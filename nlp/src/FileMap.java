@@ -14,7 +14,7 @@ public class FileMap implements Map {
     // ...; ]
 
     FileMap() {
-        maxSize = 15;
+        maxSize = 17;
         map = new LinkedList[maxSize];
 
         for (int i = 0; i < maxSize; i++) {

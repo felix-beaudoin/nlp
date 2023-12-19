@@ -41,11 +41,7 @@ public class Main {
 
         System.out.println("--------- Answers to queries ------------");
         QueryReader queryReader = new QueryReader(queryFile, m.wordMap, textBigrams, documentSearch);
-        try {
-            queryReader.answerQueries();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        queryReader.answerQueries();
 
 
 

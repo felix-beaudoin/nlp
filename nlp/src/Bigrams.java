@@ -69,7 +69,7 @@ public class Bigrams {
     public String getMostProbableBigramOf(String wordToComplete) {
         FileMap fileMap =  wordMap.get(wordToComplete);     // fileMap associated with the word
 
-        HashMap<String, Integer> nextwords = new HashMap<>();
+        HashMap<String, Integer> nextWords = new HashMap<>();
 
         for (FileMapEntry entry : fileMap.entrySet()) {
             String title = entry.fichier();
@@ -80,11 +80,11 @@ public class Bigrams {
                             String word = text.getWords()[position + 1];            // this is the next word
 
                             // Count frequency of this word
-                            if (nextwords.containsKey(word)) {
-                                Integer count = nextwords.get(word);
-                                nextwords.put(word, count+1);
+                            if (nextWords.containsKey(word)) {
+                                Integer count = nextWords.get(word);
+                                nextWords.put(word, count+1);
                             } else {
-                                nextwords.put(word, 1);
+                                nextWords.put(word, 1);
                             }
                         }
                     }
@@ -98,7 +98,7 @@ public class Bigrams {
         Integer max = 0;
         String wordMax = "joe";
 
-        for (Map.Entry<String, Integer> entry : nextwords.entrySet()) {
+        for (Map.Entry<String, Integer> entry : nextWords.entrySet()) {
             if (entry.getValue().compareTo(max) > 0) {                  // Word with higher count
                 max = entry.getValue();
                 wordMax = entry.getKey();

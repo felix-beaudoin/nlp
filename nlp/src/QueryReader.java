@@ -1,5 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -35,35 +36,41 @@ public class QueryReader {
      * Read query file, correct it and get answers to queries
      * @throws FileNotFoundException
      */
-    public void answerQueries() throws FileNotFoundException {
-        File textFile = new File(filePath);
-        Scanner reader = new Scanner(textFile);
-        Correction correction = new Correction(this.wordMap);
+    public void answerQueries() {
 
-        while (reader.hasNextLine()) {
-            String[] queryLine = reader.nextLine().split(" ");
+        try {
+            File textFile = new File(filePath);
+            Scanner reader = new Scanner(textFile);
+            Correction correction = new Correction(this.wordMap);
 
-            // Search query
-            if (queryLine[0].toLowerCase().equals("search")) {
+            while (reader.hasNextLine()) {
+                String[] queryLine = reader.nextLine().split(" ");
 
-                // create a new String[] of words to search
-                String[] wordsToSearch = new String[queryLine.length - 1];
-                // correct words to search
-                for (int i = 1; i < queryLine.length; i++) {
-                    wordsToSearch[i - 1] = correction.closestWord(queryLine[i]);
+                // Search query
+                if (queryLine[0].toLowerCase().equals("search")) {
+
+                    // create a new String[] of words to search
+                    String[] wordsToSearch = new String[queryLine.length - 1];
+                    // correct words to search
+                    for (int i = 1; i < queryLine.length; i++) {
+                        wordsToSearch[i - 1] = correction.closestWord(queryLine[i]);
+                    }
+                    // Print answer to search query
+                    System.out.println(documentSearch.bestDocument(wordsToSearch));
+
+
+                    // Bigram query
+                } else if (queryLine[0].toLowerCase().equals("the")) {          // bigram query starts with "the"
+                    String wordToComplete = correction.closestWord(queryLine[5]);
+
+                    // Print answer to bigram query
+                    System.out.println(wordToComplete + " " + bigrams.getMostProbableBigramOf(wordToComplete));
+
                 }
-                // Print answer to search query
-                System.out.println(documentSearch.bestDocument(wordsToSearch));
 
-
-            // Bigram query
-            } else if (queryLine[0].toLowerCase().equals("the")) {          // bigram query starts with "the"
-                String wordToComplete = correction.closestWord(queryLine[5]);
-
-                // Print answer to bigram query
-                System.out.println(wordToComplete + " " + bigrams.getMostProbableBigramOf(wordToComplete));
             }
-
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
     }
