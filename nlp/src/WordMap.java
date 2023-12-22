@@ -11,7 +11,7 @@ public class WordMap implements Map {
     private LinkedList<WordMapEntry>[] map;
 
     WordMap() {
-        maxSize = 15;
+        maxSize = 17;
         map = new LinkedList[maxSize];
 
         for (int i = 0; i < maxSize; i++) {
@@ -80,7 +80,6 @@ public class WordMap implements Map {
 
             for (WordMapEntry entry : entrySet) {
                 put(entry.mot(), entry.fileMap());
-                System.out.println("resizing!");
             }
         }
 
@@ -120,7 +119,7 @@ public class WordMap implements Map {
     }
 
     @Override
-    public Set keySet() {
+    public Set<String> keySet() {
         HashSet<String> set = new HashSet<>();
 
         for (LinkedList<WordMapEntry> entryList : map) {

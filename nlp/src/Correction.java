@@ -1,23 +1,33 @@
-//import static edu.stanford.nlp.util.StringUtils.editDistance;
-import java.util.HashMap;
+import static edu.stanford.nlp.util.StringUtils.editDistance;
 public class Correction {
-    private Query query;
-    private HashMap<String, Integer> text = new HashMap<>();
 
-    // TODO: add constructor, get word to correct from query
+    private WordMap wordMap;
 
-    public String closestWord(String wordToCorrect, HashMap<String,Integer> text1) {
-        int leastEditDistance = wordToCorrect.length();
+
+    public Correction( WordMap map) {
+        this.wordMap = map;
+    }
+
+
+    /**
+     * Find word in texts with the smallest Levenshtein distance
+     * @param wordToCorrect
+     * @return the word that corrects the word to correct
+     */
+    public String closestWord(String wordToCorrect) {
+        int leastEditDistance = wordToCorrect.length();         // Initialize leastEditDistance to its maximum
         String closestWord = wordToCorrect;
 
-        for (String word : text1.keySet()) {
-            //int editDistance = editDistance(wordToCorrect, word);
+        for (String word : this.wordMap.keySet()) {
+            int editDistance = editDistance(wordToCorrect, word);   // CoreNLP tool
 
-            //if (leastEditDistance > editDistance) {     // a word in text is closer to the word we are correcting
-             //   leastEditDistance = editDistance;
-            //    closestWord = word;
-           // }
+            if (leastEditDistance > editDistance) {             // a word in text is closer to the word we are correcting
+               leastEditDistance = editDistance;
+                closestWord = word;
+             }
         }
+
+
         return closestWord;
     }
 

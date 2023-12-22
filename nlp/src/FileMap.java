@@ -1,6 +1,7 @@
 
 import java.util.*;
 
+
 public class FileMap implements Map {
 
     private int size = 0;
@@ -8,8 +9,12 @@ public class FileMap implements Map {
     public double maxFacteurCharge = 3.0/4;
     private LinkedList<FileMapEntry>[] map;
 
+    // [LinkedList: {(fichier, positions) -> (fichier, positions) -> ...};
+    // LinkedList: {(fichier, positions) -> (fichier, positions) -> ...};
+    // ...; ]
+
     FileMap() {
-        maxSize = 15;
+        maxSize = 17;
         map = new LinkedList[maxSize];
 
         for (int i = 0; i < maxSize; i++) {
@@ -29,12 +34,24 @@ public class FileMap implements Map {
         return size == 0;
     }
 
+    @Override
     public boolean containsKey(Object key) {
         for (LinkedList<FileMapEntry> entries : map) {
             for (FileMapEntry entry : entries) {
                 if ( key.equals(entry.fichier()) ) { return true; }
             }
         }
+        return false;
+    }
+
+    public boolean containsKey(String fichier) {
+        int index = fichier.hashCode() % maxSize;
+        if (index<0) { index += maxSize; }
+
+        for (FileMapEntry entry : map[index]) {
+            if (fichier.equals(entry.fichier())) { return true; }
+        }
+
         return false;
     }
 
@@ -91,6 +108,8 @@ public class FileMap implements Map {
         }
 
         int index = fichier.hashCode() % maxSize;
+        if (index<0) { index += maxSize; }
+
 
         for (int i = 0; i < map[index].size(); i++) {
 
@@ -102,7 +121,7 @@ public class FileMap implements Map {
 
         }
 
-        var positionArray = new ArrayList<Integer>();
+        var positionArray = new ArrayList<Integer>();       // Pourquoi var et pas ArrayList<Integer>
         positionArray.add(position);
         FileMapEntry newEntry = new FileMapEntry(fichier, positionArray);
 
@@ -118,6 +137,7 @@ public class FileMap implements Map {
         for (FileMapEntry entry : map[index]) {
             if (entry.fichier().equals(fichier)) {
                 map[index].push(new FileMapEntry(fichier, positions));
+
                 return map[index].remove(map[index].indexOf(entry)).positions();
             }
         }

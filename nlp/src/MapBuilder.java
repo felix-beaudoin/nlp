@@ -1,16 +1,34 @@
 import java.io.*;
 import edu.stanford.nlp.ling.*;
 import edu.stanford.nlp.pipeline.*;
-import java.util.Properties;
+import edu.stanford.nlp.util.logging.RedwoodConfiguration;
+
+import java.util.*;
+
 public class MapBuilder {
 
+        // Mettre les attributs private + get???
     WordMap wordMap = new WordMap();
-    MapBuilder() {
+    private String datasetDir;
+
+    Text[] texts;
+
+    public MapBuilder(String datasetDir) {
+        this.datasetDir = datasetDir;
+
         try {
-        String dir = "src/ressources/dataset";
+        String dir = datasetDir;
         File folder = new File(dir);
-        File[] listOfFiles = folder.listFiles();
-        for (File file : listOfFiles) {
+        File[] list = folder.listFiles();
+
+        int dimension = list.length;
+
+        texts = new Text[dimension];
+
+        for (int j=0; j<list.length; j++) {
+           File file = list[j];
+
+
 
             if(file.isFile())
             {
@@ -25,6 +43,8 @@ public class MapBuilder {
                     Properties props=new Properties();
                     props.setProperty("annotators","tokenize,pos,lemma");
                     props.setProperty("coref.algorithm","neural");
+
+                    RedwoodConfiguration.current().clear().apply();
                     StanfordCoreNLP pipeline=new StanfordCoreNLP(props);
                     CoreDocument document=new CoreDocument(finalline);
                     pipeline.annotate(document);
@@ -43,6 +63,13 @@ public class MapBuilder {
 
                 String[] mots = str.split(" ");
 
+
+                this.texts[j] = new Text(file.getName(), mots);
+
+
+
+                System.out.println(file.getName() + " " +mots[0] + mots[1] + mots[2]);
+
                 for (int i=0; i < mots.length; i++) {
                     String mot = mots[i];
                     if (wordMap.get(mot) == null) {
@@ -59,7 +86,7 @@ public class MapBuilder {
             }
         }
         } catch (IOException joe) {
-            System.out.println(joe);
+            System.out.println(joe);        // let's go joe
         }
     }
 }
