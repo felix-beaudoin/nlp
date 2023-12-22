@@ -20,7 +20,7 @@ public class Main {
         int numberOfFiles = folder.listFiles().length;
 
 
-        var m = new MapBuilder(datasetDir);
+        MapBuilder m = new MapBuilder(datasetDir);
        // System.out.println("test");
        // System.out.println(m.wordMap.get("the").get("903.txt")); // 0, 39, 77
 //

@@ -9,12 +9,12 @@ public class FileMap implements Map {
     public double maxFacteurCharge = 3.0/4;
     private LinkedList<FileMapEntry>[] map;
 
-    // [LinkedList: {(fichier, positions) -> (fichier, positions) -> ...};
-    // LinkedList: {(fichier, positions) -> (fichier, positions) -> ...};
-    // ...; ]
+
 
     FileMap() {
         maxSize = 17;
+
+        //chaque linkedlist représente un bucket
         map = new LinkedList[maxSize];
 
         for (int i = 0; i < maxSize; i++) {
@@ -76,9 +76,12 @@ public class FileMap implements Map {
 
     public ArrayList<Integer> get(String fichier) {
 
+
+        // on regarde l'index
         int index = fichier.hashCode() % maxSize;
         if (index<0) { index += maxSize; }
 
+        // dans le bucket, on va à travers le bucket pour trouver le entry
         for (FileMapEntry entry : map[index]) {
             if (fichier.equals(entry.fichier())) { return entry.positions(); }
         }
@@ -91,6 +94,7 @@ public class FileMap implements Map {
 
         size++;
 
+        // si le facteur de charge est atteint
         if (size >= maxSize * maxFacteurCharge) {
 
             Set<FileMapEntry> entrySet = entrySet();
@@ -102,6 +106,7 @@ public class FileMap implements Map {
                 map[i] = new LinkedList<>();
             }
 
+            // on resize et on rehash tout les entries
             for (FileMapEntry entry : entrySet) {
                 put(entry.fichier(), entry.positions());
             }
@@ -111,6 +116,8 @@ public class FileMap implements Map {
         if (index<0) { index += maxSize; }
 
 
+
+        // parcourir le bucket pour la bonne valeur
         for (int i = 0; i < map[index].size(); i++) {
 
             if (fichier.equals(map[index].get(i).fichier())) {
@@ -121,10 +128,11 @@ public class FileMap implements Map {
 
         }
 
-        var positionArray = new ArrayList<Integer>();       // Pourquoi var et pas ArrayList<Integer>
+        ArrayList<Integer> positionArray = new ArrayList<>();
         positionArray.add(position);
         FileMapEntry newEntry = new FileMapEntry(fichier, positionArray);
 
+        // si aucun élément du bucket est le bon, on le rajoute
         map[index].push(newEntry);
         return null;
     }

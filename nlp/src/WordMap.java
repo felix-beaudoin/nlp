@@ -12,6 +12,8 @@ public class WordMap implements Map {
 
     WordMap() {
         maxSize = 17;
+
+        //chaque linkedlist représente un bucket
         map = new LinkedList[maxSize];
 
         for (int i = 0; i < maxSize; i++) {
@@ -46,15 +48,14 @@ public class WordMap implements Map {
     }
 
 
-
-
-
-
     public FileMap get(Object mot) {
 
+        // on regarde l'index
         int index = mot.hashCode() % maxSize;
         if (index<0) { index += maxSize; }
 
+
+        // dans le bucket, on va à travers le bucket pour trouver le entry
         for (WordMapEntry entry : map[index]) {
             if (mot.equals(entry.mot())) { return entry.fileMap(); }
         }
@@ -62,13 +63,15 @@ public class WordMap implements Map {
         return null;
     }
 
+
     public Object put(String mot, FileMap fileMap) {
 
         size++;
 
+        // si le facteur de charge est atteint
         if (size >= maxSize * maxFacteurCharge) {
 
-
+            // on resize et on rehash tout les entries
             Set<WordMapEntry> entrySet = entrySet();
 
             this.maxSize = maxSize*2 + 1;
@@ -85,9 +88,11 @@ public class WordMap implements Map {
 
         WordMapEntry newEntry = new WordMapEntry(mot, fileMap);
 
-        int index = mot.hashCode() % maxSize;
-        if (index<0) { index += maxSize; }
+        int index = mot.hashCode() % maxSize; // -maxSize <= index < maxSize
+        if (index<0) { index += maxSize; } // 0 <= index < maxSize
 
+
+        // parcourir le bucket pour la bonne valeur
         for (int i = 0; i < map[index].size(); i++) {
 
             if (mot.equals(map[index].get(i).mot())) {
@@ -95,7 +100,7 @@ public class WordMap implements Map {
             }
 
         }
-
+        // si aucun élément du bucket est le bon, on le rajoute
         map[index].push(newEntry);
         return null;
 
