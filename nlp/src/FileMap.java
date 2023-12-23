@@ -1,4 +1,3 @@
-
 import java.util.*;
 
 
@@ -11,7 +10,7 @@ public class FileMap implements Map {
 
 
 
-    FileMap() {
+    public FileMap() {
         maxSize = 17;
 
         //chaque linkedlist représente un bucket

@@ -2,12 +2,6 @@ import java.util.ArrayList;
 import java.util.Set;
 
 public class DocumentSearch {
-     /* TFIDF:
-     * compter la fréquence d'un mot dans chaque document
-     * compter le nombre de documents qui contiennent le mot
-     * compter le nombre de documents
-     */
-
 
     private WordMap wordMap;
     private int numberOfFiles;

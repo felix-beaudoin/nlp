@@ -12,6 +12,10 @@ public class MapBuilder {
 
     public Text[] texts;
 
+    /**
+     * Constructor for MapBuilder. Process texts and put the words in wordMaps
+     * @param datasetDir directory of dataset
+     */
     public MapBuilder(String datasetDir) {
         this.datasetDir = datasetDir;
 
@@ -69,10 +73,7 @@ public class MapBuilder {
 
                     this.texts[j] = new Text(file.getName(), mots);
 
-
-
-                    System.out.println(file.getName() + " " +mots[0] + mots[1] + mots[2]);
-
+                    // Put words in wordMap
                     for (int i=0; i < mots.length; i++) {
                         String mot = mots[i];
                         if (wordMap.get(mot) == null) {

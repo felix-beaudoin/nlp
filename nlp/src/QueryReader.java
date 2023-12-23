@@ -34,10 +34,6 @@ public class QueryReader {
         this.documentSearch = documentSearch;
     }
 
-    //public ArrayList<String> getBigramQueries() {return this.bigramQueries;}
-
-   // public ArrayList<String[]> getSearchQueries() {return searchQueries;}
-
     /**
      * Read query file, correct it and get answers to queries
      * @throws FileNotFoundException
@@ -89,20 +85,5 @@ public class QueryReader {
         }
 
     }
-
-    public void correctQueries() {
-        Correction correction = new Correction(this.wordMap);
-
-        // Replace words in query by their correction
-        for (int i=0; i<bigramQueries.size(); i++) {
-            bigramQueries.set(i, correction.closestWord(bigramQueries.get(i)));
-        }
-        for (int i=0; i<searchQueries.size(); i++) {
-            for (int j=0; j<searchQueries.get(i).length; j++) {
-                searchQueries.get(i)[j] = correction.closestWord(searchQueries.get(i)[j]);
-            }
-        }
-    }
-
 
 }
