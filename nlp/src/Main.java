@@ -15,6 +15,7 @@ public class Main {
     public static void main(String[] args) {
         String datasetDir = "src/ressources/Informations_sur_le_TP2/dataset";
         String queryFile = "src/ressources/Informations_sur_le_TP2/query.txt";
+        String solutionFile = "src/ressources/Informations_sur_le_TP2/solution.txt";
 
         File folder = new File(datasetDir);
         int numberOfFiles = folder.listFiles().length;
@@ -40,7 +41,7 @@ public class Main {
        // System.out.println(documentSearch.bestDocument(bla));
 
         System.out.println("--------- Answers to queries ------------");
-        QueryReader queryReader = new QueryReader(queryFile, m.wordMap, textBigrams, documentSearch);
+        QueryReader queryReader = new QueryReader(queryFile, solutionFile, m.wordMap, textBigrams, documentSearch);
         queryReader.answerQueries();
 
 

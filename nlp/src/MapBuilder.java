@@ -89,7 +89,7 @@ public class MapBuilder {
                 }
             }
         } catch (IOException joe) {
-            System.out.println(joe);        // let's go joe
+            System.out.println(joe);
         }
     }
 }

@@ -1,5 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -13,16 +14,21 @@ public class QueryReader {
     private WordMap wordMap;
     private Bigrams bigrams;
     private DocumentSearch documentSearch;
+    private String solutionPath;
 
-    /**
-     * Constructor for QueryReader
-     * @param filePath path of query file
-     * @param wordMap
-     * @param bigrams
-     * @param documentSearch
-     */
-    public QueryReader(String filePath, WordMap wordMap, Bigrams bigrams, DocumentSearch documentSearch) {
+
+
+/**
+ * Constructor for QueryReader
+ * @param filePath path of query file
+ * @param solutionPath path of solution file
+ * @param wordMap
+ * @param bigrams
+ * @param documentSearch
+ */
+    public QueryReader(String filePath, String solutionPath, WordMap wordMap, Bigrams bigrams, DocumentSearch documentSearch) {
         this.filePath = filePath;
+        this.solutionPath = solutionPath;
         this.wordMap = wordMap;
         this.bigrams = bigrams;
         this.documentSearch = documentSearch;
@@ -43,6 +49,11 @@ public class QueryReader {
             Scanner reader = new Scanner(textFile);
             Correction correction = new Correction(this.wordMap);
 
+            File solutionFile = new File(solutionPath);
+            solutionFile.createNewFile();
+            FileWriter fileWriter = new FileWriter(solutionFile);
+
+
             while (reader.hasNextLine()) {
                 String[] queryLine = reader.nextLine().split(" ");
 
@@ -57,6 +68,7 @@ public class QueryReader {
                     }
                     // Print answer to search query
                     System.out.println(documentSearch.bestDocument(wordsToSearch));
+                    fileWriter.write(documentSearch.bestDocument(wordsToSearch) + "\n");
 
 
                     // Bigram query
@@ -65,10 +77,13 @@ public class QueryReader {
 
                     // Print answer to bigram query
                     System.out.println(wordToComplete + " " + bigrams.getMostProbableBigramOf(wordToComplete));
+                    fileWriter.write(wordToComplete + " " + bigrams.getMostProbableBigramOf(wordToComplete) + "\n");
 
                 }
 
             }
+            fileWriter.close();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
