@@ -3,6 +3,7 @@ Overview
 
 A simple NLP tool built in Java using Stanford CoreNLP. It processes text from datasets to perform:
 
+
     Tokenization
     Lemmatization
     Bigrams prediction
@@ -25,9 +26,9 @@ On input:
     the most probable bigram of dwarf
 
 It outputs:
+
     902.txt
     coffee import
     903.txt
     902.txt
     dwarf planet
-    
