@@ -1,8 +1,7 @@
 # Text processing and document search tool
 ## Overview
 
-A simple NLP tool built in Java using Stanford's CoreNLP library. It processes text from datasets to perform:
-
+A text processing tool and document search engine built able to do:
 
     Tokenization
     Lemmatization
