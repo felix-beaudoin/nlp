@@ -1,4 +1,4 @@
-# NLP Tool 
+# Text processing and document search tool
 ## Overview
 
 A simple NLP tool built in Java using Stanford's CoreNLP library. It processes text from datasets to perform:
